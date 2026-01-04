@@ -7,11 +7,12 @@ class AlbumsService {
   constructor() {
     this._pool = new Pool();
   }
+
   async addAlbum({ name, year }) {
-    const albumId = `album-${nanoid(16)}`;
+    const id = `album-${nanoid(16)}`;
     const query = {
       text: 'INSERT INTO albums VALUES ($1,$2,$3) RETURNING id',
-      values: [albumId, name, year],
+      values: [id, name, year],
     };
 
     const result = await this._pool.query(query);
@@ -32,7 +33,20 @@ class AlbumsService {
     if (!result.rows.length) {
       throw new NotFoundError('Album tidak ditemukan');
     }
-    return result.rows[0];
+
+    const album = result.rows[0];
+    const songsQuery = {
+      text: 'SELECT id, title, performer FROM songs WHERE album_id = $1',
+      values: [id],
+    };
+    const songsResult = await this._pool.query(songsQuery);
+
+    return {
+      id: album.id,
+      name: album.name,
+      year: album.year,
+      songs: songsResult.rows,
+    };
   }
 
   async editAlbumById(id, { name, year }) {

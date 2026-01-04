@@ -75,11 +75,11 @@ PGPORT=5432
 npm start
 ```
 
-server is running => `http://localhost:3000`.
+server is running => `http://localhost:5000`.
 
 ---
 
-## Endpoint API
+## Endpoint API Albums
 
 ### 1. Tambah Album
 
@@ -110,7 +110,7 @@ POST /albums
 
 ---
 
-### 2. Ambil Album berdasarkan ID
+### 2. Ambil album berdasarkan ID
 
 ```
 GET /albums/{id}
@@ -125,7 +125,7 @@ GET /albums/{id}
     "album": {
       "id": "album-xxxx",
       "name": "Nama Album",
-      "year": 2025,
+      "year": 2025
     }
   }
 }
@@ -133,7 +133,47 @@ GET /albums/{id}
 
 ---
 
-### 3. Update Album
+### 3. Ambil daftar lagu di dalam detail album (Optional)
+
+```
+GET /albums/{albumId}
+```
+
+**Response**:
+
+```json
+{
+  "status": "success",
+  "data": {
+    "album": {
+      "id": "album-xxxx",
+      "name": "Nama Album",
+      "year": 2025,
+      "songs": [
+        {
+          "id": "song-xxxx",
+          "title": "Judul Lagu",
+          "performer": "performer"
+        },
+        {
+          "id": "song-yyyy",
+          "title": "Judul Lagu",
+          "performer": "performer"
+        },
+        {
+          "id": "song-zzzz",
+          "title": "Judul Lagu",
+          "performer": "performer"
+        }
+      ]
+    }
+  }
+}
+```
+
+---
+
+### 4. Update album berdasarkan ID
 
 ```
 PUT /albums/{id}
@@ -159,7 +199,7 @@ PUT /albums/{id}
 
 ---
 
-### 4. Hapus Album
+### 5. Hapus Album berdasarkan ID
 
 ```
 DELETE /albums/{id}
@@ -176,7 +216,123 @@ DELETE /albums/{id}
 
 ---
 
+## Endpoint API Lagu
+
+### 1. Tambah lagu
+
+```
+POST /songs
+```
+
+**Request body**:
+
+```json
+{
+  "title": "Judul Lagu",
+  "year": 2025,
+  "performer": "Nama Artis",
+  "genre": "Pop",
+  "duration": 210,
+  "albumId": "album-xxxx"
+}
+```
+
+**Response**:
+
+```json
+{
+  "status": "success",
+  "message": "Lagu berhasil ditambahkan",
+  "data": {
+    "songId": "song-xxxx"
+  }
+}
+```
+
+---
+
+### 2. Ambil lagu berdasarkan ID
+
+```
+GET /songs/{id}
+```
+
+**Response**:
+
+```json
+{
+  "status": "success",
+  "data": {
+    "songs": [
+      {
+        "id": "song-xxxx",
+        "title": "Judul Lagu",
+        "performer": "performer"
+      },
+      {
+        "id": "song-yyyy",
+        "title": "Judul Lagu",
+        "performer": "performer"
+      },
+      {
+        "id": "song-zzzz",
+        "title": "Judul Lagu",
+        "performer": "performer"
+      }
+    ]
+  }
+}
+```
+
+---
+
+### 3. Update lagu berdasarkan ID
+
+```
+PUT /songs/{id}
+```
+
+**Request body**:
+
+```json
+{
+  "title": "Judul Lagu Baru",
+  "year": 2026,
+  "performer": "Nama Artis Baru",
+  "genre": "Genre Baru",
+  "duration": 180,
+  "albumId": "album-yyyy"
+}
+```
+
+**Response**:
+
+```json
+{
+  "status": "success",
+  "message": "Lagu berhasil diperbarui"
+}
+```
+
+---
+
+### 4. Hapus lagu berdasarkan ID
+
+```
+DELETE /albums/{id}
+```
+
+**Response**:
+
+```json
+{
+  "status": "success",
+  "message": "Lagu berhasil dihapus"
+}
+```
+
+---
+
 ## Lisensi
 
 Project ini bersifat open-source dan dapat digunakan untuk keperluan pembelajaran.
-
